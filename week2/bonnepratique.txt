@@ -12,10 +12,14 @@ dans un script
 
 5 - 1 script - 1 appel dans main(){}   main $@
 
-main(){
-    function1 a b
-    ________2 c d
-    ________3
-}
+        main(){
+            function1 a b
+            ________2 c d
+            ________3
+        }
 
-main $@
+        main $@
+
+
+
+
