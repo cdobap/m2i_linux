@@ -7,3 +7,5 @@ dans un script
     découper les problèmes / la logique
 
 3 - choisir types conditions / boucles
+
+4 - une fonction une tache: ne pas se repeter
