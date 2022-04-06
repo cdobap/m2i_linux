@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Veuillez saisir une note"
+echo "saisir une note"
 
 read note
 
