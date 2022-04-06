@@ -8,7 +8,7 @@ display_menu(){
     echo "3 - Quitter"
     echo "--------"
 }
-# entrer nom user
+# demande d'entrer nom user
 get_username(){
     echo "entrer le nom de l'utilisateur"
     read username

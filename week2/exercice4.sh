@@ -20,15 +20,18 @@ gestion_cas(){
     fi
 }
 
-# si existe: la note donnée en parametre est stockée dans $note
-note=$1
-# check si $1 est existe et est bien une note >= 0
-if [ "$note" -ge 0 ]; then    
-    gestion_cas $note
-else
-    # demande une var à l'utilisateur
-    echo "entrer une note"
-    read -r note
-    gestion_cas $note
-fi
+main(){
+    # si existe: la note donnée en parametre est stockée dans $note
+    note=$1
+    # check si $1 est existe et est bien une note >= 0
+    if [ "$note" -ge 0 ]; then    
+        gestion_cas $note
+    else
+        # demande une var à l'utilisateur
+        echo "entrer une note"
+        read -r note
+        gestion_cas $note
+    fi
+}
 
+main $@
