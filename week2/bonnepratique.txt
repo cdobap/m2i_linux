@@ -9,3 +9,13 @@ dans un script
 3 - choisir types conditions / boucles
 
 4 - une fonction une tache: ne pas se repeter
+
+5 - 1 script - 1 appel dans main(){}   main $@
+
+main(){
+    function1 a b
+    ________2 c d
+    ________3
+}
+
+main $@

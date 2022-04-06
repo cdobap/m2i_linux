@@ -2,6 +2,7 @@
 
 hellolinux(){
     echo "hello linux"
+    echo "hello $1"
 }
 
-hellolinux
+hellolinux "arch"
