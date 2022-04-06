@@ -16,11 +16,11 @@ if [ $nbre -gt 0 ]; then
         let "i=$i+1"
     done
     echo $total
-else
-    i=-1
-    while [ $i -gt $nbre ]; do
-        let "total=$total*$nbre"
-        let "i=$i-1"
-    done
-    echo $total
+# else
+#     i=-1
+#     while [ $i -gt $nbre ]; do
+#         let "total=$total*$nbre"
+#         let "i=$i-1"
+#     done
+#     echo $total
 fi

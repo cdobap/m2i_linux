@@ -1,0 +1,9 @@
+
+dans un script
+
+1 - initialiser les variables
+
+2 - ecrire ce qu'on veut faire
+    découper les problèmes / la logique
+
+3 - choisir types conditions / boucles
