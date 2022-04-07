@@ -22,7 +22,7 @@ ask_number(){
     set_number $numb
 
 }
-# check if it s a number
+# check if it s a number and if it is call the factorielle function
 set_number(){
         if [[ $1 =~ ^[0-9]+$ ]]; then
             factorielle $1
@@ -34,14 +34,9 @@ set_number(){
 }
 
 main(){
-    # check if there is param and if it s a number
+    # check if there is param and call the function that check if its a number
     if [ $# -ne 0 ]; then
-        if [[ $1 =~ ^[0-9]+$ ]]; then
-            factorielle $1
-            echo $res
-        else
-            echo 'wrong params'
-        fi
+        set_number $1
     else
     # if no args ask a number
         ask_number
