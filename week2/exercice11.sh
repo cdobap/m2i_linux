@@ -7,7 +7,10 @@
 # ce script affiche les lignes dans lesquelles la note est supérieure ou égale à 10
 # et les enregistre dans le fichier 'AuMoinsDix.txt'
 # Pour exécuter ce script: ". exercice11.sh" dans le terminal
-
+# au préalable s'assurer que FichierNote.txt existe et est placé dans le même répertoire que ce script
+# et s'assurer qu'il y a une ligne vide à la fin du fichier
+# si ce n'est pas le cas: décommenter la ligne suivante:
+# echo " " >> FichierNote.txt
 
 # cette fonction va lire le fichier ligne par ligne
 read_file(){
@@ -36,7 +39,17 @@ print_selected_line(){
 }
 # cette fonction inscrit dans le fichier AuMoinsDix.txt les données des lignes qui ont une note supérieure ou égale à 10 
 export_selected_line(){
-        echo $1 $2 $3 >> AuMoinsDix.txt     
+        # appel de la fonction get_appreciation avec la note en param $3
+        get_appreciation $3
+        echo $1 $2 $3 $appreciation>> AuMoinsDix.txt     
+}
+# cette fonction vérifie que le param est bien une note entre 0 et 20 et stock la sortie de l'exercice 4 dans une variable
+get_appreciation(){
+    # regex pour vérifier que le param $1 est une note 
+    if [[ $1 =~ ^[0-9]$|^1[0-9]$|^20$ ]]; then
+        # appel du script exercice04 et std out dans $appreciation
+        appreciation=`. exercice11_04.sh $1`
+    fi
 }
 # la fonction main 
 main(){
