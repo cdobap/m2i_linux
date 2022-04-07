@@ -19,7 +19,10 @@ check_params(){
             echo "en cours de developpement"
         elif [ $# -eq 3 ]; then
             # if there is 3 params, set var and calcul
-            set_variables $1 $2 $3
+            # set_variables $1 $2 $3
+            set_nombre1 $1
+            set_operateur $2
+            set_nombre2 $3
             calcul
         else
             echo "wrong params"
