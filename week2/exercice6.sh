@@ -31,7 +31,7 @@ check_params(){
 }   
 
 # define variable with params and check if its number
-# to do one setter for each var
+# one setter for each var
 set_nombre1(){
     if [[ ! $1 =~ ^[0-9]+$ ]];then
         echo "this is not a number"
