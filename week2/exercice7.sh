@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# this script calculate the "factorielle" of a number that you give in param or asking for
+# this script calculate the "factorielle" of a number that you give in param or asking for one
 # date 22-04-07
 # author: 
 # write in franglish
