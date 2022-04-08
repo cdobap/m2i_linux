@@ -14,7 +14,7 @@ get_files_number(){
 }
 
 get_exec_files_number(){    
-    let exec_files_numb=`ls -lR | find $1 -type f -perm -u+rx | wc -l`
+    let exec_files_numb=`ls -lR | find $1 -type f -perm /111 | wc -l`
     echo "$exec_files_numb exec files"
 }
 
