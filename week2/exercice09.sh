@@ -18,7 +18,6 @@ bubble_sort(){
         for ((j=0; j<${#@}; j++)); do       
         #echo ${array_number[j]}
             if  [[ $((j+1)) -lt ${#@} ]] && [ ${array_number[j]} -gt ${array_number[$((j+1))]} ]; then
-                #swap
                 temp=${array_number[j]}
                 array_number[j]=${array_number[$((j+1))]}
                 array_number[$((j+1))]=$temp
