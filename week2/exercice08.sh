@@ -4,6 +4,7 @@
 # 
 
 get_subdir_number(){
+    # substract 1 to ommit the . dir
     let subdir_numb=`ls -lR $1 | grep ^d | wc -l`-1
     echo "$subdir_numb subdir"
 }
@@ -19,9 +20,14 @@ get_exec_files_number(){
 }
 
 main(){
-    get_subdir_number $1
-    get_files_number $1
-    get_exec_files_number $1
+    d=`ls -ld $1`
+    if [[ $d =~ ^d ]]; then
+        get_subdir_number $1
+        get_files_number $1
+        get_exec_files_number $1
+    else 
+        echo "not a directory"
+    fi
 }
 
 main $@
