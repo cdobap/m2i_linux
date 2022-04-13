@@ -4,20 +4,21 @@
 # verification des arguments
 # on parcourt le tableau des arguments
 for arg in $@
-
 do
-
     # on verifit chaque argument ([a-z]*=)
     # on recupere seulement la partie de droite (après le =)
     if [[ $arg =~ ^device= ]]
     then   
         device=$(echo $arg | cut -d"=" -f2)
-    elif [[ $arg =~ ^part=[0-9]* ]]
+    elif [[ $arg =~ ^part=[1-9]* ]]
     then
         nbpart=$(echo $arg | cut -d"=" -f2)
     elif [[ $arg =~ --clean ]]
     then
         clean=true
+    elif [[ $arg =~ --crypt ]]
+    then
+        crypt=true
     fi
 done
 
@@ -75,7 +76,26 @@ then
     fi
 fi
 
+# cryptage
+SERIALdevice=$(lsblk -no +"SERIAL" | grep "$name" | sed -E "s/ +/ /g" | cut -d" " -f7)
+read -p "Voulez-vous chiffrer la clé ?" crypto
 
+if [[ ! -e /var/makey ]]
+then
+    mkdir /var/makey
+    echo "on a créer le répertoire var/makey"
+fi
+
+if [[ $crypto =~ (Y|yes|Oui|O|o|y|) ]]
+then
+    echo "Cryptage..."
+    dd if=/dev/urandom of=/var/makey/$SERIALdevice bs=1000 count=1
+    cryptsetup luksFormat $device --key-file /var/makey/$SERIALdevice
+    cryptsetup luksOpen $device crypt$SERIALdevice --key-file /var/makey/$SERIALdevice  
+    device_path=/dev/mapper/crypt$SERIALdevice
+else
+    device_path=/dev/mapper/crypt$SERIALdevice
+fi
 
 # recupere la taille totale du device
 
@@ -99,16 +119,18 @@ fi
 echo "########### [LVM]"
 
 # creation volume physique
-pvcreate $device   
-
+# pvcreate $device   
+pvcreate $device_path
 
 # on recupere le nombre de VGmakey deja crees on s'en sert pour creer un nouveau VG unique 
 # (si on lance le programme pour plus d'une clee en meme temps)
 nbVG=$(ls -l /dev/ | grep VGmakey | wc -l)
 vgname=VGmakey$nbVG
+#vgname=VGmakeyCRYPT
 
 # creation virtual group
-vgcreate $vgname $device
+vgcreate $vgname $device_path
+# vgcreate $vgname $device
 
 
 # definition de la taille des partitions en pourcentage
@@ -145,5 +167,4 @@ echo "partitions LVM et Formattage ext4 terminé..."
 echo ""
 lsblk $device
 
-
-
+cryptsetup luksClose $device_path
