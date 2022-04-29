@@ -1,0 +1,22 @@
+server {
+	listen 80;
+	server_name visu.com;
+	return 301 https://$host$request_uri;
+}
+server {
+	error_log /var/log/nginx/visu.log;	
+	listen	127.0.0.1:443 ssl;
+	server_name visu.com;
+
+	ssl_protocols TLSv1 TLSv1.1 TLSv1.2 TLSv1.3;
+
+	ssl_certificate	/etc/nginx/ssl/server.crt;
+	ssl_certificate_key /etc/nginx/ssl/server.key;
+	
+	location / {
+		root /var/www/visu;
+		index index.html;
+	}
+	
+}
+
