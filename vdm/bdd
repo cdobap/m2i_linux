@@ -1,7 +1,9 @@
 vdm1:machine1:192.168.1.159:UP
 vdm1:machine2:192.168.1.19:UP
 vdm2:machine3:192.168.1.150:DOWN
-
-vdm2:machine3:192.168.1.150:DOWN
+vdm2:machine3:192.168.1.50:DOWN
 vdm1:machine2:192.168.1.0:UP
-vdm1:machine2:192.168.1.9:UP
+vdm1:machine2:192.168.1.9:DOWN
+vdm2:machine3:192.168.1.10:UP
+vdm3:machine3:192.168.1.10:UP
+group4:machine3:192.168.1.10:UP
