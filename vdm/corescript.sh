@@ -38,14 +38,26 @@ echo '<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstra
 		# on crée un dossier par groupe et on redirige le stderr dans /dev/null si le dossier existe déjà 
 		mkdir /var/www/visu/$group 2> /dev/null
 		# on ajoute les informations de la machine dans la page index.html du groupe de la machine
+		
+		case $state in
+			UP)
 		echo "<div class='container'>
 		<div class='row align-items-start shadow p3 mb-5 bg-body rounded-pill'>
 			<div class='col fs-2'>$name</div>
 			<div class='col fs-2'>$ip</div>
-			<div class='col fs-2'>$state</div>
+			<div class='col fs-2 text-success'>$state</div>
 		</div>
-		</div>" >> /var/www/visu/$group/index.html
+		</div>" >> /var/www/visu/$group/index.html;;
+			*)					
+		echo "<div class='container'>
+		<div class='row align-items-start shadow p3 mb-5 bg-body rounded-pill'>
+			<div class='col fs-2'>$name</div>
+			<div class='col fs-2'>$ip</div>
+			<div class='col fs-2 text-danger'>$state</div>
+		</div>
+		</div>" >> /var/www/visu/$group/index.html;;
 		
+		esac
 	done
  	
 	# on met le programme en attente pendant 60 secondes
