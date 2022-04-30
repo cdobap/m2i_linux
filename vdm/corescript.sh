@@ -26,7 +26,7 @@ while true; do
 		# on link bootstrap dans la page html de chaque groupe pour faire du css plus rapidement
 		echo '<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">' >> /var/www/visu/$grp/index.html
 		# on ajoute le nom du groupe dans sa page html
-		echo "<h1 class='border border-5 text-center mb-5'>$grp</h1>" >> /var/www/visu//$grp/index.html
+		echo "<h1 class='border border-5 text-center mb-5'>$grp</h1>" >> /var/www/visu/$grp/index.html
 	done
 	# on ferme les balises ouvertes avant la boucle
 	echo "</div></div'>" >> /var/www/visu/index.html
