@@ -22,6 +22,13 @@ vdm03:machine3:192.168.1.10:UP
 vdm03:machine3:192.168.1.10:DONW
 vdm15:machine1:22.22.44.32:DOWN
 vdm15:machine2:22.22.44.21:UP
-vdm15:machine3:22.22.44.21:UP
-vdm15:machine3:122.44.55.55:UP
+vdm15:T-801:22.22.44.21:UP
+vdm15:T-801:122.44.55.55:UP
 vdm11:machine3:122.44.55.55:UP
+vdm1:T-900:10.1.24.32:UP
+vdm1:t-100:1.2.3.4:UP
+vdm1:t-200:1.2.3.4:UP
+vdm1:t-300:2.3.4.5:UP
+vdm1:t-400:2.3.4.5:UP
+vdm12:t-600:255.3.4.5:UP
+vdm12:w-700:177.3.4.5:UP

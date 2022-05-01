@@ -51,7 +51,7 @@ while true; do
 			# si la machine est UP: couleur verte
 			UP)
 				echo "<div class='container'>
-				<div class='row align-items-start shadow p3 mb-5 bg-body rounded-pill'>
+				<div class='row align-items-start shadow p3 mb-5 bg-body rounded-pill text-center'>
 					<div class='col fs-2'>$name</div>
 					<div class='col fs-2'>$ip</div>
 					<div class='col fs-2 text-success'>$state</div>
@@ -60,7 +60,7 @@ while true; do
 			# si la machine n'est pas UP: couleur rouge
 			*)					
 				echo "<div class='container'>
-				<div class='row align-items-start shadow p3 mb-5 bg-body rounded-pill'>
+				<div class='row align-items-start shadow p3 mb-5 bg-body rounded-pill text-center'>
 					<div class='col fs-2'>$name</div>
 					<div class='col fs-2'>$ip</div>
 					<div class='col fs-2 text-danger'>$state</div>
