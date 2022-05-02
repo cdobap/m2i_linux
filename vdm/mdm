@@ -3,14 +3,14 @@
 #source /etc/mdm.conf
 
 # on définit une variable ip_server pour la réutiliser dans le script
-ip_server=0.0.0.0
+ip_server=...
 
 # fonction qui ajoute une machine dans un groupe
 add_machine() {
 	# on vérifie que la nom de la nouvelle machine comprend entre 3 et 12 caractères, que l'ip est valide, que le nom du groupe commence bien par vdm 
 	if [[ $2 =~ ^[a-zA-Z0-9-]{3,12}$ ]] && [[ $3 =~ ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$ ]] && [[ $4 =~ ^vdm[0-9]{1,2}$ ]]; then
 		# on se connecte au serveur avec ssh et on ajoute une machine avec tout ses attributs dans le fichier bdd
-		ssh visu@$ip_server echo "$4:$2:$3:UP" >> /home/visu/bdd 
+		ssh visu@$ip_server sed -i -e "\$\a\\$4:$2:$3:UP" /home/visu/bdd 
 	else
 		# si les arguments ne sont pas validés, on affiche un message d'erreur à l'utilisateur et on lui propose d'utiliser la commande help
 		echo "invalid argument: try 'mdm help' for more information "
@@ -77,8 +77,6 @@ remove_machine() {
 			fi;;
 		1) echo "the machine doesn't exist: try 'mdm list' to get the right name";;
 	esac
-
-
 }
 
 # fonction qui liste les machines dans un groupe
@@ -86,12 +84,9 @@ list_machine() {
 	# connexion au serveur ssh et on récupère les machines qui appartiennent au groupe demandé avec grep
 	ssh visu@$ip_server cat /home/visu/bdd | grep ^$2:
 	if [[ $? =~ 1 ]]; then 
-		echo "the groupe doesn't exist"		
+		echo "the group doesn't exist"		
 	fi
 }
-
-
-
 
 # on fait une boucle case pour gérer tous les cas de figure
 case $1 in
@@ -113,7 +108,7 @@ case $1 in
 		add [machine_name] [ip_address] [group]
 		remove [machine_name] [group]
 	       	list [group]
-		change [machine_name] [OPTION][group]
+		change [machine_name] [OPTION] [group]
 			--name [new_machine_name]
 			--group [new_group_name]
 			";;
