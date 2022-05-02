@@ -1,44 +1,91 @@
 #!/bin/bash
 
+# on définit une variable ip_server pour la réutiliser dans le script
 ip_server=0.0.0.0
 
+# fonction qui ajoute une machine dans un groupe
 add_machine() {
+	# on vérifie que la nom de la nouvelle machine comprend entre 3 et 12 caractères, que l'ip est valide, que le nom du groupe commence bien par vdm 
 	if [[ $2 =~ ^[a-zA-Z0-9-]{3,12}$ ]] && [[ $3 =~ ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$ ]] && [[ $4 =~ ^vdm[0-9]{1,2}$ ]]; then
+		# on se connecte au serveur avec ssh et on ajoute une machine avec tout ses attributs dans le fichier bdd
 		ssh visu@$ip_server echo "$4:$2:$3:UP" >> /home/visu/bdd 
 	else
+		# si les arguments ne sont pas validés, on affiche un message d'erreur à l'utilisateur et on lui propose d'utiliser la commande help
 		echo "invalid argument: try 'mdm help' for more information "
 	fi
 }
 
+# fonction qui modifie le nom ou le groupe d'une machine
 change_machine() {
 case $3 in
+	# modifie le nom d'une machine
 	--name)
-		ssh visu@$ip_server grep "$5:$2:" /home/visu/bdd 1> /dev/null 
-		case $? in
-			0) ssh visu@$ip_server sed -i "s/$5:$2:/$5:$4:/" /home/visu/bdd;;
-
-			1) echo "the machine doesn't exist: try 'mdm list' to get the right name";;
-		esac;;
+		# on vérifie que le nouveau nom comprend entre 3 et 12 caractères avec une regex
+		if [[ $4 =~ ^[a-zA-Z0-9-]{3,12}$ ]]; then
+			# on se connecte au serveur avec ssh et on vérifie que la machine existe avec grep et on renvoie la sortie dans /dev/null 
+			ssh visu@$ip_server grep "$5:$2:" /home/visu/bdd 1> /dev/null 
+			# on récupère le résultat de grep, si 0 la machine existe, si 1 elle n'existe pas
+			case $? in
+				# on se connecte au serveur avec ssh et on modifie le nom de la machine avec sed
+				0) ssh visu@$ip_server sed -i "s/$5:$2:/$5:$4:/" /home/visu/bdd;;
+				# si la machine n'existe pas, on affiche un message d'erreur
+				1) echo "the machine doesn't exist: try 'mdm list' to get the right name";;
+			esac
+		else
+			# on affiche un message d'erreur si le nouveau nom ne contient pas le nombre de caractères requis et ne match pas avec la regex (dans la condition if)
+			echo "new name should be between 3 and 12 characters"
+		fi;;
+	# change la machine de groupe
 	--group)
-		ssh visu@$ip_server grep "$5:$2:" /home/visu/bdd 1> /dev/null 
-		
-		case $? in
-			0) ssh visu@$ip_server sed -i "s/$5:$2:/$4:$2:/" /home/visu/bdd;;
-			1) echo "the machine doesn't exist: try 'mdm list' to get the right name";;
-		esac;;
+		# on vérifie que le nom du groupe commence par vdm et est suivi d'un nombre inférieur à 100
+		if [[ $4 =~ ^vdm[0-9]{1,2}$ ]];then
+			# on se connecte au serveur avec ssh et on vérifie que la machine existe dans le groupe
+			ssh visu@$ip_server grep "$5:$2:" /home/visu/bdd 1> /dev/null 
+			# on récupère le résultat de grep, si 0 la machine existe, si 1 elle n'existe pas
+			case $? in
+				# on se connecte au serveur avec ssh et on modifie le groupe avec sed
+				0) ssh visu@$ip_server sed -i "s/$5:$2:/$4:$2:/" /home/visu/bdd;;
+				# si la machine n'est pas dans le groupe, on affiche un message d'erreur
+				1) echo "the machine doesn't exist: try 'mdm list' to get the right name";;
+			esac
+		else
+			# on affiche un message d'erreur si le nouveau nom ne commence pas par vdm et ne match pas avec la regex (dans la condition if)
+			echo "new group name should start by vdm and should be followed by a number < 100 "
+		fi;;
 	*)
-		echo "invalid option: use --name | --group | --state to modify the machine";;
+		# on affiche un message d'erreur si l'argument n'est pas --name ou --group 
+		echo "invalid option: use --name or --group ";;
 esac
 }
 
+# fonction qui supprime une machine
 remove_machine() {
-	ssh visu@$ip_server grep "$5:$2:" /home/visu/bdd 1> /dev/null 
+	# connexion au serveur ssh et vérification que la machine existe
+	ssh visu@$ip_server grep "$5:$2:" /home/visu/bdd 1> /dev/null
+	# on récupère le résultat de grep, si 0 la machine existe, si 1 elle n'existe pas
 	case $? in
-		0) ssh visu@$ip_server sed -i "/$5:$2:/d" /home/visu/bdd;;
+		# on demande confirmation à l'utilisateur
+		0)	read -p "Do you really want to delete $2? [y|N]" confirm_delete
+			if [[ $confirm_delete =~ ^[y|yes|Y|YES|Yes]$ ]];then
+				# connexion au serveur ssh et on supprime la machine
+		       		ssh visu@$ip_server sed -i "/$5:$2:/d" /home/visu/bdd
+			else
+				# message si l'utilisateur ne confirme pas le message de suppression
+				echo "operation canceled"
+			fi;;
 		1) echo "the machine doesn't exist: try 'mdm list' to get the right name";;
 	esac
 
 
+}
+
+# fonction qui liste les machines dans un groupe
+list_machine() {
+	# connexion au serveur ssh et on récupère les machines qui appartiennent au groupe demandé avec grep
+	ssh visu@$ip_server cat /home/visu/bdd | grep ^$2:
+	if [[ $? =~ 1 ]]; then 
+		echo "the groupe doesn't exist"		
+	fi
 }
 
 
@@ -57,7 +104,7 @@ case $1 in
 	change) change_machine $@;;
 	
 	# liste les machines dans un groupe
-	list)echo "ls";;
+	list) list_machine $@;;
 	
 	# manuel d'utilisation de la commande
 	help) echo "help";;
