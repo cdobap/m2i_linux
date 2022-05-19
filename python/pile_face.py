@@ -27,8 +27,11 @@ while True:
         print("resultat: " + res)
         print("you loose !")
         pc_point += 1
+    elif user != res and pc != res:
+        print("resultat: " + res)
+        print("you both loose !")       
 
-    print("your points: " + str(user_point))
-    print("pc points: " + str(pc_point))
+    print(">> your points: " + str(user_point))
+    print(">> pc points: " + str(pc_point))
 
     print("------------")
